@@ -3,6 +3,35 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from django.db import transaction
 from django.contrib.auth.models import UserManager
 
+
+class User(AbstractUser):
+    first_name = models.CharField(max_length=128, blank=True)
+    last_name = models.CharField(max_length=128, blank=True)
+    email = models.EmailField(max_length=32, unique=True)
+
+
+    def __str__(self):
+        return "%s %s" % (self.first_name, self.last_name)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """
 class UserManager(BaseUserManager):
     
@@ -31,33 +60,33 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password=password, **extra_fields)
 
 """
-
+"""
 class Users(AbstractBaseUser):
 
     first_name = models.CharField(max_length=128, blank=True)
     last_name = models.CharField(max_length=128, blank=True)
     email = models.EmailField(max_length=32, unique=True)    
-    #password = models.CharField(max_length=128)
     username = models.CharField(max_length=128, blank=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['password']
+
+    objects = UserManager()
+ 
+    objects =   ()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
-    objects = UserManager()
-    
+    def save(self, *args, **kwargs):
+        super(User, self).save(*args, **kwargs)
+        return self
     """
-                objects =   ()
-            
-                USERNAME_FIELD = 'email'
-                REQUIRED_FIELDS = ['first_name', 'last_name']
-            
-                def save(self, *args, **kwargs):
-                    super(User, self).save(*args, **kwargs)
-                    return self
-                """
 
 
-class User(AbstractUser):
-    first_name = models.CharField(max_length=128, blank=True)
-    last_name = models.CharField(max_length=128, blank=True)
-    email = models.EmailField(max_length=32, unique=True)
+
+
+
+
+
+

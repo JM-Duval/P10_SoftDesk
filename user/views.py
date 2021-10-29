@@ -9,7 +9,29 @@ from user.serializers import UserSerializer, RegisterSerializer
 
 from rest_framework.decorators import api_view, permission_classes
 
- 
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+
+
+@permission_classes([AllowAny,])
+class RegisterApi(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(
+            {
+                "user": UserSerializer(user, context=self.get_serializer_context()).data,
+                "message": "User Created Successfully. Now perform Login to get your token",
+            }
+        )
+
+
 class UserViewset(ModelViewSet):
 
 	serializer_class = UserSerializer
@@ -18,24 +40,6 @@ class UserViewset(ModelViewSet):
 		return User.objects.all()
 
 
-class UserRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
-
-	permission_classes = (IsAuthenticated,)
-	serializer_class = UserSerializer
-
-	def get(self, request, *args, **kwargs):
-		serializer = self.serializer_class(request.user)
-
-		return Response(serializer.data, status=status.HTTP_200_OK)
-
-	def put(self, request, *args, **kwargs):
-		serializer_data = request.data.get('user', {})
-
-		serializer = UserSerializer(request.user, data=serializer_data, partial=True)
-		serializer.is_valid(raise_exception=True)
-		serializer.save()
-
-		return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -43,10 +47,10 @@ class UserRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
 def authenticate_user(request):
     print('//////', user)
     try:
-        username = request.data['username']
+        email = request.data['email']
         password = request.data['password']
  
-        user = User.objects.get(username=username, password=password)
+        user = User.objects.get(email=email, password=password)
         
         if user:
             try:
@@ -67,26 +71,10 @@ def authenticate_user(request):
                 'error': 'can not authenticate with the given credentials or the account has been deactivated'}
             return Response(res, status=status.HTTP_403_FORBIDDEN)
     except KeyError:
-        res = {'error': 'please provide a username and a password'}
+        res = {'error': 'please provide a email and a password'}
         return Response(res)
 
 
-
-@permission_classes([AllowAny,])
-class RegisterApi(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
-
-    def post(self, request, *args, **kwargs):
-        
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        return Response(
-            {
-                "user": UserSerializer(user, context=self.get_serializer_context()).data,
-                "message": "User Created Successfully. Now perform Login to get your token",
-            }
-        )
 
 
 @permission_classes([AllowAny,])
@@ -113,3 +101,26 @@ class CreateUserAPIView(generics.GenericAPIView):
                 "message": "User Created Successfully. Now perform Login to get your token",
             }
         )
+
+
+
+
+class UserRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, *args, **kwargs):
+        serializer_data = request.data.get('user', {})
+
+        serializer = UserSerializer(request.user, data=serializer_data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+

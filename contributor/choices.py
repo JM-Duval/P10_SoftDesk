@@ -1,8 +1,8 @@
 PERMISSIONS_CHOICES= [
-	(1, ("ACTEUR")),
-	(2, ('ACCESSOIRISTE')),
-	(3, ('ANIMATEUR 3D')),
-	(4, ('ASSISTANT MONTEUR')),
-	(5, ('ASSISTANT REALISATEUR')),
-	(6, ('BRUITEUR'))
+	(1, ("pilote")),
+	(2, ('manager')),
+	(3, ('mécano')),
+	(4, ('chef Mécano')),
+	(5, ('data anlyst')),
+	(6, ('testeur'))
 ]
