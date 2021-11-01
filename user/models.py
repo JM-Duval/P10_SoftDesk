@@ -1,7 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, AbstractUser
-from django.db import transaction
-from django.contrib.auth.models import UserManager
+from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):

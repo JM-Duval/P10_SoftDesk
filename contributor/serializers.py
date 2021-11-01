@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
-
 from contributor.models import Contributor
+
 
 class ContributorSerializer(ModelSerializer):
 

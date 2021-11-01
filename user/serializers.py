@@ -8,7 +8,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ("id", "first_name", "last_name", "username", "email", "password")
+        fields = ("id", "first_name", "last_name", "username", "email", 
+            "password")
 
         extra_kwargs = {
             "password": {"write_only": True},
@@ -26,7 +27,8 @@ class UserSerializer(serializers.ModelSerializer):  # affichage & formulaire
                 
     class Meta:
         model = User
-        fields = ("id", "first_name", "last_name", "username", "email", "password")
+        fields = ("id", "first_name", "last_name", "username", "email", 
+            "password")
 
     def validate_password(self, value: str) -> str:
             return make_password(value)

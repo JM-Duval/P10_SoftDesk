@@ -8,7 +8,9 @@ from issue.permissions import IsProjectAuthor, IsProjectContributor, IsIssueAuth
 class IssueViewset(viewsets.ModelViewSet):
 
     serializer_class = IssueSerializer
-    permission_classes = [IsProjectAuthor | IsProjectContributor | IsIssueAuthor]
+    permission_classes = [
+        IsProjectAuthor | IsProjectContributor | IsIssueAuthor
+        ]
 
     def create(self, request, *args, **kwargs):
         request.POST._mutable = True
