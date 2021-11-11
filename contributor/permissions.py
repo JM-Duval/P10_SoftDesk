@@ -19,7 +19,8 @@ class IsProjectAuthor(BasePermission):
         if project.author_user_id.id == request.user.id: # si le user est l'autheur du projet
             print("l'utilisateur est l'auteur du projet")
             print(request.method)
-            if request.method in METHODES_CREATE_READ or request.method in METHODES_PUT_DEL:  # Pour lecture et ecriture
+            if (request.method in METHODES_CREATE_READ or 
+                request.method in METHODES_PUT_DEL):  # Pour lecture et ecriture
                 return True
 
 

@@ -49,7 +49,7 @@ urlpatterns = [
 	path('api-auth/', include('rest_framework.urls')),    
 	path('signup/', RegisterApi.as_view(), name='signup'),
 	path('login/', TokenObtainPairView.as_view(), name='obtain_tokens'),
-	path('api/token/refresh/', TokenRefreshView.as_view(), name='refresh_token'),
+	path('token/refresh/', TokenRefreshView.as_view(), name='refresh_token'),
 	path('', include(router.urls)), # urls du router pour rendre les urls disponibles
 	#path('', include('user.urls')),
 ]
